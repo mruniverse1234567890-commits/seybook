@@ -2,7 +2,7 @@
 require_once 'config/db.php';
 require_once 'includes/auth.php';
 
-// GET: optional search term from the URL (services.php?q=dental)
+
 $q = trim($_GET['q'] ?? '');
 $like = '%' . $q . '%';
 $stmt = $conn->prepare('SELECT * FROM services WHERE name LIKE ? OR description LIKE ? ORDER BY name');

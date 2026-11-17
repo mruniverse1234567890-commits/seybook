@@ -3,7 +3,6 @@ require_once 'config/db.php';
 require_once 'includes/auth.php';
 require_admin();   // Admin-only page
 
-// GET: change an appointment status (admin.php?action=confirm&id=3)
 $actions = ['confirm' => 'Confirmed', 'complete' => 'Completed', 'cancel' => 'Cancelled'];
 if (isset($_GET['action'], $_GET['id']) && isset($actions[$_GET['action']])) {
     $newStatus = $actions[$_GET['action']];
@@ -17,7 +16,6 @@ if (isset($_GET['action'], $_GET['id']) && isset($actions[$_GET['action']])) {
     exit;
 }
 
-// POST: add a new service
 $svcErrors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_service'])) {
     $name  = trim($_POST['name'] ?? '');
@@ -40,14 +38,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_service'])) {
     }
 }
 
-// Statistics
 $total = (int)$conn->query('SELECT COUNT(*) AS c FROM appointments')->fetch_assoc()['c'];
 $byStatus = ['Pending' => 0, 'Confirmed' => 0, 'Completed' => 0, 'Cancelled' => 0];
 foreach ($conn->query('SELECT status, COUNT(*) AS c FROM appointments GROUP BY status') as $r) $byStatus[$r['status']] = (int)$r['c'];
 $userCount = (int)$conn->query("SELECT COUNT(*) AS c FROM users WHERE role = 'user'")->fetch_assoc()['c'];
 $barColor = ['Pending' => 'warning', 'Confirmed' => 'success', 'Completed' => 'secondary', 'Cancelled' => 'danger'];
 
-// GET: filter by status (admin.php?status=Pending)
 $filter = $_GET['status'] ?? '';
 $sql = 'SELECT a.id, a.appt_date, a.appt_time, a.status, u.full_name, s.name FROM appointments a JOIN users u ON a.user_id = u.id JOIN services s ON a.service_id = s.id';
 if (isset($byStatus[$filter])) {

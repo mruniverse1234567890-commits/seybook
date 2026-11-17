@@ -1,5 +1,5 @@
 <?php
-// Database connection using MySQLi (XAMPP defaults: user root, empty password)
+
 $db_host = 'localhost';
 $db_user = 'root';
 $db_pass = '';

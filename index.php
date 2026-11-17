@@ -2,7 +2,6 @@
 require_once 'config/db.php';
 require_once 'includes/auth.php';
 
-// Statistics shown on the home page
 $userCount  = $conn->query("SELECT COUNT(*) AS c FROM users WHERE role = 'user'")->fetch_assoc()['c'];
 $apptCount  = $conn->query("SELECT COUNT(*) AS c FROM appointments")->fetch_assoc()['c'];
 $todayCount = $conn->query("SELECT COUNT(*) AS c FROM appointments WHERE appt_date = CURDATE() AND status <> 'Cancelled'")->fetch_assoc()['c'];
@@ -13,7 +12,7 @@ $featured   = $conn->query("SELECT * FROM services ORDER BY id LIMIT 3");
 $pageTitle = 'Home';
 include 'includes/header.php';
 ?>
-<!-- Image carousel -->
+
 <div id="heroCarousel" class="carousel slide sb-slide" data-bs-ride="carousel">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-label="Slide 1"></button>
@@ -40,7 +39,7 @@ include 'includes/header.php';
 
 <div class="container mt-4">
   <?php if (is_logged_in()): ?>
-    <!-- Text is replaced by the greetUser() JavaScript function -->
+    
     <div class="alert alert-info" id="welcomeMsg" data-name="<?= e($_SESSION['full_name']) ?>">Welcome, <?= e($_SESSION['full_name']) ?>!</div>
   <?php else: ?>
     <div class="alert alert-warning">New here? <a href="register.php" class="alert-link">Create a free account</a> to book appointments.</div>
@@ -84,7 +83,7 @@ include 'includes/header.php';
   </div>
 </div>
 
-<!-- Modal: opening hours -->
+
 <div class="modal fade" id="hoursModal" tabindex="-1" aria-labelledby="hoursTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">

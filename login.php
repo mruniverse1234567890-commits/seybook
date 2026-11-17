@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = trim($_POST['username'] ?? '');
     $pw   = $_POST['password'] ?? '';
 
-    // Validate credentials against the database
+ 
     $stmt = $conn->prepare('SELECT id, full_name, username, password, role FROM users WHERE username = ?');
     $stmt->bind_param('s', $user);
     $stmt->execute();
@@ -17,8 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
 
     if ($row && password_verify($pw, $row['password'])) {
-        session_regenerate_id(true);               // new session id after login
-        $_SESSION['user_id']   = $row['id'];       // session management
+        session_regenerate_id(true);               
+        $_SESSION['user_id']   = $row['id'];       
         $_SESSION['username']  = $row['username'];
         $_SESSION['full_name'] = $row['full_name'];
         $_SESSION['role']      = $row['role'];

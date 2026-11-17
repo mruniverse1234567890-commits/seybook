@@ -1,5 +1,3 @@
--- SeyBook Appointment Booking System
--- Import this file in phpMyAdmin (Import tab). It creates the database, tables and sample data.
 CREATE DATABASE IF NOT EXISTS seybook_db CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE seybook_db;
 
@@ -38,7 +36,6 @@ CREATE TABLE appointments (
   FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- Sample accounts: admin / Admin@123  and  demo / User@123 (passwords are stored hashed)
 INSERT INTO users (full_name, email, username, password, role) VALUES
 ('System Administrator', 'admin@seybook.sc', 'admin', '$2b$12$wubejoWIHLS.cPe4QY2JT.L/oIuHoMuVhJcEa/LMGb8VxKoOyXetO', 'admin'),
 ('Demo Patient', 'demo@seybook.sc', 'demo', '$2b$12$b0vnNBUVCJ/Y/SMBoYJfOeN9ModZQ/mIZk9drlBQiahL/KVJ814i.', 'user');

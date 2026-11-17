@@ -1,6 +1,4 @@
-/* SeyBook JavaScript: functions, events and form validation */
 
-/* ---------- FUNCTION 1: welcome message after login ---------- */
 function greetUser() {
   var el = document.getElementById('welcomeMsg');
   if (!el) return;
@@ -10,7 +8,6 @@ function greetUser() {
   el.textContent = greeting + ', ' + name + '! Ready to book your next visit?';
 }
 
-/* ---------- FUNCTION 2: count-up animation for the registered-users number ---------- */
 function animateCount(el) {
   var target = parseInt(el.getAttribute('data-target'), 10) || 0;
   var current = 0;
@@ -22,7 +19,7 @@ function animateCount(el) {
   }, 30);
 }
 
-/* ---------- FUNCTION 3: price and end-time summary on the booking page ---------- */
+
 function updateSummary() {
   var select = document.getElementById('service_id');
   var box = document.getElementById('summaryBox');
@@ -41,7 +38,7 @@ function updateSummary() {
   box.textContent = text;
 }
 
-/* ---------- EVENT: onclick ---------- */
+
 function showTip() {
   var tips = ['Arrive 10 minutes early with your ID.', 'Cancel at least a day ahead so someone else can use the slot.', 'Bring a list of your questions or medicines.'];
   document.getElementById('tipBox').textContent = tips[Math.floor(Math.random() * tips.length)];
@@ -51,11 +48,11 @@ function openCancel(id) {
   new bootstrap.Modal(document.getElementById('cancelModal')).show();
 }
 
-/* ---------- EVENTS: onmouseover / onmouseout ---------- */
+
 function hoverOn(btn) { btn.classList.add('btn-lift'); }
 function hoverOff(btn) { btn.classList.remove('btn-lift'); }
 
-/* ---------- Validation helpers ---------- */
+
 function showErrors(errors) {
   var box = document.getElementById('formErrors');
   if (errors.length === 0) { box.classList.add('d-none'); box.innerHTML = ''; return true; }
@@ -69,7 +66,6 @@ function todayString() {
   return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 }
 
-/* ---------- FORM VALIDATION: registration (5 fields) ---------- */
 function validateRegister() {
   var errors = [];
   var f = document.getElementById('registerForm');
@@ -81,7 +77,6 @@ function validateRegister() {
   return showErrors(errors);
 }
 
-/* ---------- FORM VALIDATION: login (2 fields) ---------- */
 function validateLogin() {
   var errors = [];
   var f = document.getElementById('loginForm');
@@ -90,7 +85,6 @@ function validateLogin() {
   return showErrors(errors);
 }
 
-/* ---------- FORM VALIDATION: booking (3 fields) ---------- */
 function validateBooking() {
   var errors = [];
   var f = document.getElementById('bookingForm');
@@ -101,7 +95,6 @@ function validateBooking() {
   return showErrors(errors);
 }
 
-/* ---------- Run when the page has loaded ---------- */
 document.addEventListener('DOMContentLoaded', function () {
   greetUser();
   document.querySelectorAll('.count').forEach(animateCount);

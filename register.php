@@ -7,7 +7,7 @@ if (is_logged_in()) { header('Location: index.php'); exit; }
 $errors = [];
 $old = ['full_name' => '', 'email' => '', 'username' => ''];
 
-// POST: form is processed here
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $full  = trim($_POST['full_name'] ?? '');
     $email = trim($_POST['email'] ?? '');
@@ -16,14 +16,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pw2   = $_POST['confirm_password'] ?? '';
     $old   = ['full_name' => $full, 'email' => $email, 'username' => $user];
 
-    // Server-side validation
+
     if ($full === '') $errors[] = 'Full name is required.';
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Enter a valid email address.';
     if (strlen($user) < 4) $errors[] = 'Username must be at least 4 characters.';
     if (strlen($pw) < 8) $errors[] = 'Password must be at least 8 characters.';
     if ($pw !== $pw2) $errors[] = 'Passwords do not match.';
 
-    // Check for duplicates
+  
     if (!$errors) {
         $stmt = $conn->prepare('SELECT id FROM users WHERE username = ? OR email = ?');
         $stmt->bind_param('ss', $user, $email);
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->close();
     }
 
-    // INSERT the new user (password is hashed, never stored as plain text)
+   
     if (!$errors) {
         $hash = password_hash($pw, PASSWORD_DEFAULT);
         $stmt = $conn->prepare("INSERT INTO users (full_name, email, username, password, role) VALUES (?, ?, ?, ?, 'user')");

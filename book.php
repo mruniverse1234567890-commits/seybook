@@ -7,7 +7,7 @@ $slots = ['09:00', '10:00', '11:00', '12:00', '14:00', '15:00', '16:00'];
 $services = $conn->query('SELECT * FROM services ORDER BY name')->fetch_all(MYSQLI_ASSOC);
 
 $errors = [];
-// GET: ?service=3 pre-selects a service (link from the services page)
+
 $old = ['service_id' => (int)($_GET['service'] ?? 0), 'appt_date' => '', 'appt_time' => '', 'notes' => ''];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -18,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'notes'      => trim($_POST['notes'] ?? ''),
     ];
 
-    // Does the service exist?
     $stmt = $conn->prepare('SELECT id FROM services WHERE id = ?');
     $stmt->bind_param('i', $old['service_id']);
     $stmt->execute();
@@ -26,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($stmt->num_rows === 0) $errors[] = 'Select a valid service.';
     $stmt->close();
 
-    // Valid date, not in the past, not a Sunday (clinic is closed)
     $d = DateTime::createFromFormat('Y-m-d', $old['appt_date']);
     if (!$d || $d->format('Y-m-d') !== $old['appt_date']) {
         $errors[] = 'Choose a valid date.';
@@ -39,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!in_array($old['appt_time'], $slots, true)) $errors[] = 'Choose a time slot from the list.';
     if (strlen($old['notes']) > 255) $errors[] = 'Notes must be 255 characters or fewer.';
 
-    // Is the slot already taken for this service?
+  
     if (!$errors) {
         $time = $old['appt_time'] . ':00';
         $stmt = $conn->prepare("SELECT id FROM appointments WHERE service_id = ? AND appt_date = ? AND appt_time = ? AND status <> 'Cancelled'");
@@ -50,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->close();
     }
 
-    // INSERT the appointment
+   
     if (!$errors) {
         $notes = $old['notes'] === '' ? null : $old['notes'];
         $stmt = $conn->prepare('INSERT INTO appointments (user_id, service_id, appt_date, appt_time, notes) VALUES (?, ?, ?, ?, ?)');

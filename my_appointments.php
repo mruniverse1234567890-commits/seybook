@@ -3,7 +3,7 @@ require_once 'config/db.php';
 require_once 'includes/auth.php';
 require_login();
 
-// GET: ?cancel=ID cancels one of the user's own appointments
+
 if (isset($_GET['cancel'])) {
     $id = (int)$_GET['cancel'];
     $stmt = $conn->prepare("UPDATE appointments SET status = 'Cancelled' WHERE id = ? AND user_id = ? AND status IN ('Pending','Confirmed')");
@@ -16,7 +16,7 @@ if (isset($_GET['cancel'])) {
     exit;
 }
 
-// Retrieve this user's appointments (JOIN with services)
+
 $stmt = $conn->prepare('SELECT a.id, a.appt_date, a.appt_time, a.notes, a.status, s.name, s.price FROM appointments a JOIN services s ON a.service_id = s.id WHERE a.user_id = ? ORDER BY a.appt_date DESC, a.appt_time DESC');
 $stmt->bind_param('i', $_SESSION['user_id']);
 $stmt->execute();
@@ -53,7 +53,7 @@ include 'includes/header.php';
   <?php endif; ?>
 </div>
 
-<!-- Modal: confirm cancellation -->
+
 <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
     <div class="modal-header"><h5 class="modal-title" id="cancelTitle">Cancel this appointment?</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
